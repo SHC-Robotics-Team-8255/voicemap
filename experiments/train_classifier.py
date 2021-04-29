@@ -1,9 +1,9 @@
 import os
-from keras.optimizers import Adam
-from keras.callbacks import CSVLogger, ModelCheckpoint, ReduceLROnPlateau
-from keras.layers import Dense
-from keras.utils import plot_model
-from keras.utils import to_categorical, Sequence
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import CSVLogger, ModelCheckpoint, ReduceLROnPlateau
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.utils import plot_model
+from tensorflow.keras.utils import to_categorical, Sequence
 import numpy as np
 import multiprocessing
 
@@ -114,7 +114,7 @@ classifier.add(Dense(train.num_classes(), activation='softmax'))
 opt = Adam(clipnorm=1.)
 classifier.compile(loss='categorical_crossentropy', optimizer=opt, metrics=['accuracy'])
 plot_model(classifier, show_shapes=True, to_file=PATH + '/plots/classifier.png')
-print classifier.summary()
+print(classifier.summary())
 
 
 #################

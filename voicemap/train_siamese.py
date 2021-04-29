@@ -1,12 +1,12 @@
 import os
-from keras.optimizers import Adam
-from keras.utils import plot_model
-from keras.callbacks import CSVLogger, ModelCheckpoint, ReduceLROnPlateau
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.utils import plot_model
+from tensorflow.keras.callbacks import CSVLogger, ModelCheckpoint, ReduceLROnPlateau
 import multiprocessing
 
-from voicemap.utils import preprocess_instances, NShotEvaluationCallback, BatchPreProcessor
-from voicemap.models import get_baseline_convolutional_encoder, build_siamese_net
-from voicemap.librispeech import LibriSpeechDataset
+from utils import preprocess_instances, NShotEvaluationCallback, BatchPreProcessor
+from models import get_baseline_convolutional_encoder, build_siamese_net
+from librispeech import LibriSpeechDataset
 from config import LIBRISPEECH_SAMPLING_RATE, PATH
 
 
@@ -55,21 +55,22 @@ encoder = get_baseline_convolutional_encoder(filters, embedding_dimension, dropo
 siamese = build_siamese_net(encoder, (input_length, 1), distance_metric='uniform_euclidean')
 opt = Adam(clipnorm=1.)
 siamese.compile(loss='binary_crossentropy', optimizer=opt, metrics=['accuracy'])
-plot_model(siamese, show_shapes=True, to_file=PATH + '/plots/siamese.png')
-print siamese.summary()
+# plot_model(siamese, show_shapes=True, to_file=PATH + '/plots/siamese.png')
+print(siamese.summary())
 
 
 #################
 # Training Loop #
 #################
-siamese.fit_generator(
-    generator=train_generator,
+
+siamese.fit(
+    x=train_generator,
     steps_per_epoch=evaluate_every_n_batches,
     validation_data=valid_generator,
     validation_steps=100,
     epochs=num_epochs,
-    workers=multiprocessing.cpu_count(),
-    use_multiprocessing=True,
+    # workers=multiprocessing.cpu_count(),
+    use_multiprocessing=False,
     callbacks=[
         # First generate custom n-shot classification metric
         NShotEvaluationCallback(

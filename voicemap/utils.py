@@ -1,9 +1,9 @@
 import numpy as np
-from keras.callbacks import Callback
-from keras.models import clone_model
+from tensorflow.keras.callbacks import Callback
+from tensorflow.keras.models import clone_model
 from tqdm import tqdm
 from scipy.spatial.distance import cdist
-import keras.backend as K
+import tensorflow.keras.backend as K
 
 
 def get_bottleneck(classifier, samples):
@@ -249,4 +249,4 @@ class NShotEvaluationCallback(Callback):
         n_shot_acc = n_correct * 1. / self.num_tasks
         logs['val_{}-shot_acc'.format(self.n_shot)] = n_shot_acc
 
-        print 'val_{}-shot_acc: {:.4f}'.format(self.n_shot, n_shot_acc)
+        print('val_{}-shot_acc: {:.4f}'.format(self.n_shot, n_shot_acc))
