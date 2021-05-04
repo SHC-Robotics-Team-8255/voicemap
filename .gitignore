@@ -107,7 +107,6 @@ venv.bak/
 data/LibriSpeech/*
 data/*.csv
 .idea/*
-models/*
 logs/*
 plots/*
 *.iml
