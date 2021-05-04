@@ -34,7 +34,7 @@ k_way_classification = 5
 
 # Derived parameters
 input_length = int(LIBRISPEECH_SAMPLING_RATE * n_seconds / downsampling)
-param_str = 'siamese__filters_{}__embed_{}__drop_{}__pad={}'.format(filters, embedding_dimension, dropout, pad  )
+param_str = 'siamese__filters_{}__embed_{}__drop_{}__pad={}'.format(filters, embedding_dimension, dropout, pad)
 
 
 ###################
