@@ -147,7 +147,7 @@ class LibriSpeechDataset(Sequence):
         alike_pairs = pd.merge(
             self.df.sample(int(num_pairs)*2, weights='length'),
             self.df,
-            on='speaker_id'
+            on='speaker_id',
         ).sample(int(num_pairs))[['speaker_id', 'id_x', 'id_y']]
 
         alike_pairs = zip(alike_pairs['id_x'].values, alike_pairs['id_y'].values)
@@ -159,6 +159,7 @@ class LibriSpeechDataset(Sequence):
         # First get a random sample from the dataset and then get a random sample from the remaining part of the dataset
         # that doesn't contain any speakers from the first random sample
         random_sample = self.df.sample(int(num_pairs), weights='length')
+        print(random_sample)
         random_sample_from_other_speakers = self.df[~self.df['speaker_id'].isin(
             random_sample['speaker_id'])].sample(int(num_pairs), weights='length')
 
@@ -176,18 +177,21 @@ class LibriSpeechDataset(Sequence):
         :return: Inputs for both sides of the siamese network and outputs indicating whether they are from the same
         speaker or not.
         """
-        alike_pairs = list(self.get_alike_pairs(batchsize / 2))
+        alike_pairs = list(self.get_alike_pairs(1))
 
 
         # Take only the instances not labels and stack to form a batch of pairs of instances from the same speaker
+        print(len(alike_pairs), alike_pairs)
         input_1_alike = np.stack([self[alike_pairs[i][0]][0] for i in range(len(alike_pairs))])
         input_2_alike = np.stack([self[alike_pairs[i][1]][0] for i in range(len(alike_pairs))])
 
-        differing_pairs = list(self.get_differing_pairs(batchsize / 2))
+        differing_pairs = list(self.get_differing_pairs(1))
 
         # Take only the instances not labels and stack to form a batch of pairs of instances from different speakers
         input_1_different = np.stack([self[differing_pairs[i][0]][0] for i in range(len(differing_pairs))])
         input_2_different = np.stack([self[differing_pairs[i][1]][0] for i in range(len(differing_pairs))])
+
+        print(input_1_alike, input_1_different)
 
         input_1 = np.vstack([input_1_alike, input_1_different])[:, :, np.newaxis]
         input_2 = np.vstack([input_2_alike, input_2_different])[:, :, np.newaxis]
@@ -261,7 +265,7 @@ class LibriSpeechDataset(Sequence):
                 continue
 
             print(root)
-            librispeech_id = int(root.split('\\')[-2])
+            librispeech_id = int(root.split('\\')[-1]) # TODO: WAS -2
 
             for f in files:
                 # Skip non-sound files
@@ -269,6 +273,8 @@ class LibriSpeechDataset(Sequence):
                     continue
 
                 progress_bar.update(1)
+
+                print(os.path.join(root, f))
 
                 instance, samplerate = sf.read(os.path.join(root, f))
 

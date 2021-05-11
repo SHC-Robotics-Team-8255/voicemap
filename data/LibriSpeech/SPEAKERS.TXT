@@ -10,6 +10,10 @@
 ; name: the name under which the reader is registered in LibriVox
 ;
 ;ID  |SEX| SUBSET           |MINUTES| NAME
+1   | M | roboticsclub  | 25.03 | Pascal Reich
+2   | F | roboticsclub  | 25.03 | Marina Lui
+3   | M | roboticsclub  | 25.03 | Anson Mak
+4   | M | roboticsclub  | 25.03 | Luke McNamee
 14   | F | train-clean-360  | 25.03 | Kristin LeMoine
 16   | F | train-clean-360  | 25.11 | Alys AtteWater
 17   | M | train-clean-360  | 25.04 | Gord Mackenzie
