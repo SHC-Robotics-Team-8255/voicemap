@@ -360,6 +360,9 @@ test_ds = test_ds.shuffle(buffer_size=BATCH_SIZE * 8, seed=SHUFFLE_SEED).batch(
     BATCH_SIZE
 )
 
+weights = model.get_layer('embedding').get_weights()[0]
+
+
 # test_ds = test_ds.map(lambda x, y: (add_noise(x, noises, scale=SCALE), y))
 for _ in range(50):
     for audios, labels in test_ds.take(1):

@@ -45,7 +45,7 @@ import sounddevice as sd
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow_io import audio as tfioaudio
-
+import datetime
 from pathlib import Path
 from IPython.display import display, Audio
 
@@ -405,6 +405,8 @@ earlystopping_cb = keras.callbacks.EarlyStopping(patience=10, restore_best_weigh
 mdlcheckpoint_cb = keras.callbacks.ModelCheckpoint(
     model_save_filename, monitor="val_accuracy", save_best_only=True
 )
+log_dir = "../logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1, write_images=True)
 
 
 
@@ -412,7 +414,7 @@ history = model.fit(
     train_ds,
     epochs=EPOCHS,
     validation_data=valid_ds,
-    callbacks=[earlystopping_cb, mdlcheckpoint_cb],
+    callbacks=[earlystopping_cb, mdlcheckpoint_cb, tensorboard_callback],
 )
 
 

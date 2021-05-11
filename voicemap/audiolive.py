@@ -5,7 +5,6 @@ from tensorflow import keras
 model = keras.models.load_model("model.h5")
 
 
-
 def audio_to_fft(audio):
     # Since tf.signal.fft applies FFT on the innermost dimension,
     # we need to squeeze the dimensions and then expand them again
